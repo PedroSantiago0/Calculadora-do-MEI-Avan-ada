@@ -1,52 +1,117 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="description"
+    content="Calculadora MEI para estimativa de faturamento e DAS mensal."
+  >
+
   <title>Calculadora MEI</title>
+
   <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
+
   <main class="container">
-    <section class="card" aria-labelledby="titulo">
-      <h1 id="titulo">Calculadora MEI</h1>
-      <p>Calcule uma estimativa simples dos valores do MEI.</p>
+
+    <section
+      class="card"
+      aria-labelledby="titulo-principal"
+    >
+
+      <h1 id="titulo-principal">
+        Calculadora MEI
+      </h1>
+
+      <p>
+        Faça uma estimativa rápida do faturamento anual e do DAS mensal do MEI.
+      </p>
 
       <form id="form-calculadora">
+
         <div class="campo">
-          <label for="faturamento">Faturamento mensal</label>
-          <input 
-            type="number" 
-            id="faturamento" 
+
+          <label for="faturamento">
+            Faturamento mensal
+          </label>
+
+          <input
+            type="number"
+            id="faturamento"
             name="faturamento"
-            placeholder="Ex: 5000"
+            placeholder="Digite o valor mensal"
             min="0"
             required
+            aria-required="true"
           >
+
         </div>
 
         <div class="campo">
-          <label for="atividade">Tipo de atividade</label>
-          <select id="atividade" name="atividade" required>
-            <option value="">Selecione</option>
-            <option value="comercio">Comércio</option>
-            <option value="servico">Serviço</option>
-            <option value="industria">Indústria</option>
+
+          <label for="atividade">
+            Tipo de atividade
+          </label>
+
+          <select
+            id="atividade"
+            name="atividade"
+            required
+            aria-required="true"
+          >
+
+            <option value="">
+              Selecione
+            </option>
+
+            <option value="comercio">
+              Comércio
+            </option>
+
+            <option value="servico">
+              Serviço
+            </option>
+
+            <option value="industria">
+              Indústria
+            </option>
+
           </select>
+
         </div>
 
-        <button type="submit" aria-label="Calcular valores do MEI">
+        <button
+          type="submit"
+          aria-label="Calcular impostos e faturamento do MEI"
+        >
           Calcular
         </button>
 
-        <p id="mensagem-erro" class="erro" aria-live="polite"></p>
+        <p
+          id="mensagem-erro"
+          class="erro"
+          aria-live="polite"
+        ></p>
+
       </form>
 
-      <section id="resultado" class="resultado" aria-live="polite"></section>
+      <section
+        id="resultado"
+        class="resultado"
+        aria-live="polite"
+      ></section>
+
     </section>
+
   </main>
 
   <script src="js/script.js"></script>
+
 </body>
 </html>
