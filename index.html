@@ -1,496 +1,117 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora do MEI Avançada</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Fonte Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Ícones Phosphor -->
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f0f2f5;
-        }
-        
-        .bg-lilac-custom {
-            background-color: #5C5CD6;
-        }
-        
-        .text-lilac-custom {
-            color: #5C5CD6;
-        }
+  <meta charset="UTF-8">
 
-        .border-lilac-custom {
-            border-color: #5C5CD6;
-        }
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        /* Input estilizado (fundo cinza claro, borda sutil ao focar) */
-        .input-field {
-            background-color: #f9fafb;
-            border: 1px solid #d1d5db;
-            border-radius: 0.5rem;
-            padding: 0.75rem;
-            width: 100%;
-            transition: all 0.2s;
-        }
-        
-        .input-field:focus {
-            outline: none;
-            border-color: #5C5CD6;
-            box-shadow: 0 0 0 3px rgba(92, 92, 214, 0.1);
-            background-color: white;
-        }
+  <meta
+    name="description"
+    content="Calculadora MEI para estimativa de faturamento e DAS mensal."
+  >
 
-        /* Card container */
-        .card-container {
-            background-color: white;
-            border-radius: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            border: 1px solid #e5e7eb;
-        }
+  <title>Calculadora MEI</title>
 
-        /* Seção Título Etapas */
-        .step-title {
-            color: #5C5CD6;
-            font-weight: 700;
-            font-size: 1.25rem;
-            margin-bottom: 0;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .step-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .btn-clear-section {
-            font-size: 0.875rem;
-            color: #6b7280;
-            text-decoration: underline;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-
-        .btn-clear-section:hover {
-            color: #ef4444;
-        }
-
-        .btn-add {
-            background-color: white;
-            color: #5C5CD6;
-            border: 2px solid #5C5CD6;
-            transition: all 0.2s;
-        }
-        
-        .btn-add:hover {
-            background-color: #5C5CD6;
-            color: white;
-        }
-    </style>
+  <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="flex flex-col min-h-screen">
 
-    <!-- Cabeçalho -->
-    <header class="bg-lilac-custom text-white text-center py-10 px-4 shadow-lg">
-        <h1 class="text-3xl md:text-5xl font-bold mb-2">Calculadora do MEI</h1>
-        <h2 class="text-lg md:text-2xl font-normal opacity-90">Precificação Completa com Taxas e Custos</h2>
-    </header>
+<body>
 
-    <main class="flex-grow container mx-auto px-4 py-8 max-w-5xl">
+  <main class="container">
 
-        <!-- Formulário Principal -->
-        <div class="card-container p-6 md:p-8 mb-8">
-            
-            <!-- Passo 1: Custos do Produto -->
-            <div class="mb-8 border-b border-gray-100 pb-8">
-                <div class="step-header">
-                    <h3 class="step-title">
-                        <span class="text-sm bg-blue-100 text-blue-700 px-2 py-1 rounded">Passo 1</span> 
-                        Custos do Produto
-                    </h3>
-                    <button onclick="limparPasso1()" class="btn-clear-section">Limpar campos</button>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-                    <!-- Nome do Produto -->
-                    <div class="md:col-span-12">
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Nome do Produto</label>
-                        <input type="text" id="nomeProduto" class="input-field" placeholder="Ex: Bolo de Pote, Camiseta...">
-                    </div>
+    <section
+      class="card"
+      aria-labelledby="titulo-principal"
+    >
 
-                    <!-- Custo -->
-                    <div class="md:col-span-4">
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Custo (R$)</label>
-                        <input type="number" id="custoUnitario" class="input-field" placeholder="0,00" step="0.01" oninput="calcularPrevia()">
-                    </div>
+      <h1 id="titulo-principal">
+        Calculadora MEI
+      </h1>
 
-                    <!-- Frete -->
-                    <div class="md:col-span-4">
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Valor do Frete/Entrega (R$)</label>
-                        <input type="number" id="frete" class="input-field" placeholder="0,00" step="0.01" oninput="calcularPrevia()">
-                    </div>
+      <p>
+        Faça uma estimativa rápida do faturamento anual e do DAS mensal do MEI.
+      </p>
 
-                    <!-- Margem de Lucro -->
-                    <div class="md:col-span-4">
-                        <label class="block text-sm font-semibold text-gray-700 mb-1">Margem de Lucro (%)</label>
-                        <div class="relative">
-                            <input type="number" id="margemLucro" class="input-field" placeholder="%" step="1" oninput="calcularPrevia()">
-                            <div class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none">
-                                <i class="ph ph-percent"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <form id="form-calculadora">
 
-            <!-- Passo 2: Custos de Transação -->
-            <div class="mb-8">
-                <div class="step-header">
-                    <h3 class="step-title">
-                        <span class="text-sm bg-blue-100 text-blue-700 px-2 py-1 rounded">Passo 2</span> 
-                        Custos de Transação
-                    </h3>
-                    <button onclick="limparPasso2()" class="btn-clear-section">Limpar campos</button>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Esquerda: Valores Fixos -->
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">Custos Fixos Extras (R$)</label>
-                            <span class="text-xs text-gray-500 mb-1 block">Embalagem extra, etiqueta, brindes...</span>
-                            <input type="number" id="custosFixos" class="input-field" placeholder="0,00" step="0.01" oninput="calcularPrevia()">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">Impostos (DAS/Simples) (%)</label>
-                             <span class="text-xs text-gray-500 mb-1 block">Para MEI geralmente é fixo, mas se quiser simular %</span>
-                            <input type="number" id="impostos" class="input-field" placeholder="0,00" step="0.01" oninput="calcularPrevia()">
-                        </div>
-                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">Desconto à vista (%)</label>
-                            <input type="number" id="desconto" class="input-field" placeholder="0,00" step="0.01" oninput="calcularPrevia()">
-                        </div>
-                    </div>
+        <div class="campo">
 
-                    <!-- Direita: Porcentagens -->
-                    <div class="space-y-4">
-                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">Comissões (%)</label>
-                             <span class="text-xs text-gray-500 mb-1 block">Vendedores, marketplaces (Shopee, iFood...)</span>
-                            <input type="number" id="comissoes" class="input-field" placeholder="0,00" step="0.01" oninput="calcularPrevia()">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1">Taxa de Maquininha (%)</label>
-                             <span class="text-xs text-gray-500 mb-1 block">Taxa média de crédito/débito</span>
-                            <input type="number" id="taxaMaquininha" class="input-field" placeholder="0,00" step="0.01" oninput="calcularPrevia()">
-                        </div>
-                    </div>
-                </div>
-            </div>
+          <label for="faturamento">
+            Faturamento mensal
+          </label>
 
-            <!-- Área de Resultado Prévio (Feedback Imediato) -->
-            <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 mb-6 flex flex-col md:flex-row justify-between items-center gap-4">
-                <div class="text-center md:text-left">
-                    <p class="text-sm text-gray-500">Preço de Venda</p>
-                    <p id="previewPreco" class="text-2xl font-bold text-gray-800">R$ 0,00</p>
-                </div>
-                <div class="text-center md:text-left">
-                    <p class="text-sm text-gray-500">Lucro Líquido Real (pós taxas)</p>
-                    <p id="previewLucro" class="text-2xl font-bold text-green-600">R$ 0,00</p>
-                </div>
-                <button onclick="adicionarProduto()" class="btn-add flex items-center gap-2 font-bold py-3 px-8 rounded-full shadow-sm hover:shadow-md transform hover:-translate-y-0.5">
-                    <i class="ph ph-plus-circle text-xl"></i>
-                    Adicionar Produto à Lista
-                </button>
-            </div>
+          <input
+            type="number"
+            id="faturamento"
+            name="faturamento"
+            placeholder="Digite o valor mensal"
+            min="0"
+            required
+            aria-required="true"
+          >
+
         </div>
 
-        <!-- Lista de Produtos Adicionados -->
-        <section id="listaProdutosSecao" class="hidden max-w-5xl mx-auto mb-16">
-            <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <i class="ph ph-list-dashes text-lilac-custom"></i> Seus Produtos Calculados
-            </h3>
-            <div class="bg-white rounded-2xl shadow overflow-hidden border border-gray-200">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left">
-                        <thead class="bg-gray-50 border-b border-gray-200">
-                            <tr>
-                                <th class="py-3 px-4 font-semibold text-gray-600">Produto</th>
-                                <th class="py-3 px-4 font-semibold text-gray-600">Custo Total</th>
-                                <th class="py-3 px-4 font-semibold text-gray-600">Margem</th>
-                                <th class="py-3 px-4 font-semibold text-gray-600">Preço Venda</th>
-                                <th class="py-3 px-4 font-semibold text-gray-600">Taxas Totais</th>
-                                <th class="py-3 px-4 font-semibold text-gray-600">Lucro Real</th>
-                                <th class="py-3 px-4 font-semibold text-gray-600 text-center">Ação</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabelaProdutosCorpo" class="divide-y divide-gray-100">
-                            <!-- Itens serão inseridos aqui via JS -->
-                        </tbody>
-                    </table>
-                </div>
-                <div class="p-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-6 text-sm">
-                   <div>Total Vendas: <span id="totalVendas" class="font-bold text-gray-800">R$ 0,00</span></div>
-                   <div>Total Lucro: <span id="totalLucro" class="font-bold text-green-600">R$ 0,00</span></div>
-                </div>
-            </div>
-        </section>
+        <div class="campo">
 
-        <!-- Tabela de Dicas Completa -->
-        <section class="max-w-6xl mx-auto mt-12">
-            <h3 class="text-2xl font-bold text-center mb-6 text-gray-800">Dicas de Margem por Setor (Baseado em Fortaleza/Ceará)</h3>
-            
-            <div class="card-container overflow-hidden">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="bg-lilac-custom text-white">
-                                <th class="py-4 px-4 font-bold">Produto</th>
-                                <th class="py-4 px-4 font-bold whitespace-nowrap">Markup Sugerido</th>
-                                <th class="py-4 px-4 font-bold">Contexto Local (Ceará/Fortaleza)</th>
-                            </tr>
-                        </thead>
-                        <tbody class="text-gray-700 text-sm md:text-base divide-y divide-gray-200">
-                            <!-- 1. Salgados -->
-                            <tr class="hover:bg-gray-50">
-                                <td class="py-3 px-4 font-semibold">Salgados (Coxinha/Pastel)</td>
-                                <td class="py-3 px-4 font-bold text-center text-lilac-custom">150% a 250%</td>
-                                <td class="py-3 px-4">Alta concorrência. Lucro no volume e casadinha.</td>
-                            </tr>
-                            <!-- 2. Doces -->
-                            <tr class="hover:bg-gray-50">
-                                <td class="py-3 px-4 font-semibold">Doces / Bolos de Pote</td>
-                                <td class="py-3 px-4 font-bold text-center text-lilac-custom">200% a 300%</td>
-                                <td class="py-3 px-4">Valorize o "Gourmet" e ingredientes regionais.</td>
-                            </tr>
-                            <!-- 3. Marmitas -->
-                            <tr class="hover:bg-gray-50">
-                                <td class="py-3 px-4 font-semibold">Marmitas / Quentinhas</td>
-                                <td class="py-3 px-4 font-bold text-center text-lilac-custom">80% a 120%</td>
-                                <td class="py-3 px-4">Teto médio popular R$ 15,00 a R$ 20,00.</td>
-                            </tr>
-                            <!-- 4. Frutas e Verduras -->
-                            <tr class="hover:bg-gray-50">
-                                <td class="py-3 px-4 font-semibold">Frutas e Verduras</td>
-                                <td class="py-3 px-4 font-bold text-center text-lilac-custom">50% a 90%</td>
-                                <td class="py-3 px-4">Calor excessivo aumenta a perda. A margem maior cobre o lixo.</td>
-                            </tr>
-                            <!-- 5. Produtos de Limpeza -->
-                            <tr class="hover:bg-gray-50">
-                                <td class="py-3 px-4 font-semibold">Produtos de Limpeza</td>
-                                <td class="py-3 px-4 font-bold text-center text-lilac-custom">35% a 60%</td>
-                                <td class="py-3 px-4">Venda fracionada tem saída rápida nos bairros.</td>
-                            </tr>
-                            <!-- 6. Roupas (Moda) -->
-                            <tr class="hover:bg-gray-50">
-                                <td class="py-3 px-4 font-semibold">Roupas (Moda)</td>
-                                <td class="py-3 px-4 font-bold text-center text-lilac-custom">100% a 120%</td>
-                                <td class="py-3 px-4">Centro Fashion/Buraco da Gia permitem margem boa.</td>
-                            </tr>
-                            <!-- 7. Artesanato e Costura -->
-                             <tr class="hover:bg-gray-50">
-                                <td class="py-3 px-4 font-semibold">Artesanato e Costura</td>
-                                <td class="py-3 px-4 font-bold text-center text-lilac-custom">100% a 300%</td>
-                                <td class="py-3 px-4">Turista paga mais (Beira Mar).</td>
-                            </tr>
-                            <!-- 8. Cosméticos -->
-                            <tr class="hover:bg-gray-50">
-                                <td class="py-3 px-4 font-semibold">Cosméticos (Revenda)</td>
-                                <td class="py-3 px-4 font-bold text-center text-lilac-custom">30% a 60%</td>
-                                <td class="py-3 px-4">Margem tabelada, mas "Pronta Entrega" é diferencial.</td>
-                            </tr>
-                            <!-- 9. Bebidas e Gelados -->
-                            <tr class="hover:bg-gray-50">
-                                <td class="py-3 px-4 font-semibold">Bebidas e Gelados</td>
-                                <td class="py-3 px-4 font-bold text-center text-lilac-custom">100% a 200%</td>
-                                <td class="py-3 px-4">Dindin gourmet, açaí. Clima quente garante venda.</td>
-                            </tr>
-                            <!-- 10. Acessórios / Bijuterias -->
-                            <tr class="hover:bg-gray-50">
-                                <td class="py-3 px-4 font-semibold">Acessórios / Bijuterias</td>
-                                <td class="py-3 px-4 font-bold text-center text-lilac-custom">200% a 500%</td>
-                                <td class="py-3 px-4">Compra-se peças por centavos no Centro. Margem altíssima.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
+          <label for="atividade">
+            Tipo de atividade
+          </label>
 
-    </main>
+          <select
+            id="atividade"
+            name="atividade"
+            required
+            aria-required="true"
+          >
 
-    <footer class="text-center py-6 text-gray-500 text-sm border-t border-gray-200 bg-white">
-        &copy; 2024 Calculadora do MEI
-    </footer>
+            <option value="">
+              Selecione
+            </option>
 
-    <script>
-        // Array para armazenar produtos
-        let produtos = [];
+            <option value="comercio">
+              Comércio
+            </option>
 
-        // Função utilitária
-        const getVal = (id) => parseFloat(document.getElementById(id).value) || 0;
-        const formatMoney = (val) => val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            <option value="servico">
+              Serviço
+            </option>
 
-        function calcularValoresAtuais() {
-            // Entradas Passo 1
-            const custoUnit = getVal('custoUnitario');
-            const frete = getVal('frete');
-            const margem = getVal('margemLucro');
+            <option value="industria">
+              Indústria
+            </option>
 
-            // Entradas Passo 2 (Valores R$)
-            const fixosExtras = getVal('custosFixos');
+          </select>
 
-            // Entradas Passo 2 (Percentuais)
-            const impostosPct = getVal('impostos');
-            const comissoesPct = getVal('comissoes');
-            const taxaMqPct = getVal('taxaMaquininha');
-            const descontoPct = getVal('desconto');
+        </div>
 
-            // 1. Custo Base Total (Dinheiro que sai antes de vender)
-            const custoBase = custoUnit + frete + fixosExtras;
+        <button
+          type="submit"
+          aria-label="Calcular impostos e faturamento do MEI"
+        >
+          Calcular
+        </button>
 
-            // 2. Preço de Venda (Baseado no Custo + Margem Simples)
-            let precoVenda = custoBase * (1 + (margem / 100));
+        <p
+          id="mensagem-erro"
+          class="erro"
+          aria-live="polite"
+        ></p>
 
-            // 3. Calcular descontos e taxas sobre o Preço de Venda
-            const valorDesconto = precoVenda * (descontoPct / 100);
-            const precoComDesconto = precoVenda - valorDesconto;
+      </form>
 
-            const valorImpostos = precoComDesconto * (impostosPct / 100);
-            const valorComissoes = precoComDesconto * (comissoesPct / 100);
-            const valorTaxaMq = precoComDesconto * (taxaMqPct / 100);
+      <section
+        id="resultado"
+        class="resultado"
+        aria-live="polite"
+      ></section>
 
-            const totalTaxasVenda = valorDesconto + valorImpostos + valorComissoes + valorTaxaMq;
+    </section>
 
-            // 4. Lucro Líquido Real
-            const lucroReal = precoVenda - custoBase - totalTaxasVenda;
+  </main>
 
-            return {
-                custoBase,
-                precoVenda,
-                totalTaxasVenda,
-                lucroReal
-            };
-        }
+  <script src="js/script.js"></script>
 
-        function calcularPrevia() {
-            const vals = calcularValoresAtuais();
-            document.getElementById('previewPreco').innerText = formatMoney(vals.precoVenda);
-            
-            const elLucro = document.getElementById('previewLucro');
-            elLucro.innerText = formatMoney(vals.lucroReal);
-            
-            if(vals.lucroReal < 0) {
-                elLucro.classList.remove('text-green-600');
-                elLucro.classList.add('text-red-600');
-            } else {
-                elLucro.classList.remove('text-red-600');
-                elLucro.classList.add('text-green-600');
-            }
-        }
-
-        function adicionarProduto() {
-            const nome = document.getElementById('nomeProduto').value || 'Produto Sem Nome';
-            const vals = calcularValoresAtuais();
-
-            // Verificar se tem dados mínimos
-            if (vals.precoVenda === 0) {
-                alert("Por favor, preencha pelo menos o custo e a margem.");
-                return;
-            }
-
-            const produto = {
-                id: Date.now(),
-                nome: nome,
-                custoBase: vals.custoBase,
-                margem: getVal('margemLucro'),
-                precoVenda: vals.precoVenda,
-                taxas: vals.totalTaxasVenda,
-                lucroReal: vals.lucroReal
-            };
-
-            produtos.push(produto);
-            renderizarLista();
-            limparTudo();
-            
-            // Mostrar seção da lista se estiver oculta
-            document.getElementById('listaProdutosSecao').classList.remove('hidden');
-        }
-
-        function renderizarLista() {
-            const tbody = document.getElementById('tabelaProdutosCorpo');
-            tbody.innerHTML = '';
-
-            let totalV = 0;
-            let totalL = 0;
-
-            produtos.forEach(prod => {
-                totalV += prod.precoVenda;
-                totalL += prod.lucroReal;
-
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-gray-50 group transition-colors";
-                tr.innerHTML = `
-                    <td class="py-3 px-4 font-medium text-gray-800">${prod.nome}</td>
-                    <td class="py-3 px-4 text-gray-600">${formatMoney(prod.custoBase)}</td>
-                    <td class="py-3 px-4 text-gray-600">${prod.margem}%</td>
-                    <td class="py-3 px-4 font-bold text-lilac-custom">${formatMoney(prod.precoVenda)}</td>
-                    <td class="py-3 px-4 text-red-400 text-sm">-${formatMoney(prod.taxas)}</td>
-                    <td class="py-3 px-4 font-bold ${prod.lucroReal >= 0 ? 'text-green-600' : 'text-red-600'}">${formatMoney(prod.lucroReal)}</td>
-                    <td class="py-3 px-4 text-center">
-                        <button onclick="removerProduto(${prod.id})" class="text-gray-400 hover:text-red-500 transition-colors p-1 rounded hover:bg-red-50">
-                            <i class="ph ph-trash text-lg"></i>
-                        </button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-
-            document.getElementById('totalVendas').innerText = formatMoney(totalV);
-            document.getElementById('totalLucro').innerText = formatMoney(totalL);
-        }
-
-        function removerProduto(id) {
-            produtos = produtos.filter(p => p.id !== id);
-            renderizarLista();
-            if (produtos.length === 0) {
-                document.getElementById('listaProdutosSecao').classList.add('hidden');
-            }
-        }
-
-        // Limpa apenas campos do Passo 1
-        function limparPasso1() {
-            document.getElementById('nomeProduto').value = '';
-            document.getElementById('custoUnitario').value = '';
-            document.getElementById('frete').value = '';
-            document.getElementById('margemLucro').value = '';
-            document.getElementById('nomeProduto').focus();
-            calcularPrevia(); // Atualiza os resultados para zero
-        }
-
-        // Limpa apenas campos do Passo 2
-        function limparPasso2() {
-            document.getElementById('custosFixos').value = '';
-            document.getElementById('impostos').value = '';
-            document.getElementById('desconto').value = '';
-            document.getElementById('comissoes').value = '';
-            document.getElementById('taxaMaquininha').value = '';
-            calcularPrevia(); // Atualiza os resultados
-        }
-
-        function limparTudo() {
-            limparPasso1();
-            limparPasso2();
-        }
-    </script>
 </body>
 </html>
