@@ -3,44 +3,41 @@
 
 <head>
   <meta charset="UTF-8">
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Calculadora MEI para estimativa de faturamento e DAS mensal.">
+  <meta name="theme-color" content="#2563eb">
 
-  <meta
-    name="description"
-    content="Calculadora MEI para estimativa de faturamento e DAS mensal."
-  >
+  <link rel="preload" href="css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="css/style.css"></noscript>
+
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:Arial,sans-serif;background:#f4f6f8;color:#1f2937;min-height:100vh}
+    .container{width:100%;min-height:100vh;padding:24px;display:flex;align-items:center;justify-content:center}
+    .card{width:100%;max-width:520px;background:#fff;padding:32px;border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.12)}
+    h1{margin-bottom:12px;font-size:2rem;color:#0f172a}
+    p{margin-bottom:20px}
+  </style>
 
   <title>Calculadora MEI</title>
 
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="manifest" href="manifest.json">
 </head>
 
 <body>
 
   <main class="container">
 
-    <section
-      class="card"
-      aria-labelledby="titulo-principal"
-    >
+    <section class="card" aria-labelledby="titulo-principal">
 
-      <h1 id="titulo-principal">
-        Calculadora MEI
-      </h1>
+      <h1 id="titulo-principal">Calculadora MEI</h1>
 
-      <p>
-        Faça uma estimativa rápida do faturamento anual e do DAS mensal do MEI.
-      </p>
+      <p>Faça uma estimativa rápida do faturamento anual e do DAS mensal do MEI.</p>
 
       <form id="form-calculadora">
 
         <div class="campo">
-
-          <label for="faturamento">
-            Faturamento mensal
-          </label>
-
+          <label for="faturamento">Faturamento mensal</label>
           <input
             type="number"
             id="faturamento"
@@ -50,68 +47,43 @@
             required
             aria-required="true"
           >
-
         </div>
 
         <div class="campo">
-
-          <label for="atividade">
-            Tipo de atividade
-          </label>
-
-          <select
-            id="atividade"
-            name="atividade"
-            required
-            aria-required="true"
-          >
-
-            <option value="">
-              Selecione
-            </option>
-
-            <option value="comercio">
-              Comércio
-            </option>
-
-            <option value="servico">
-              Serviço
-            </option>
-
-            <option value="industria">
-              Indústria
-            </option>
-
+          <label for="atividade">Tipo de atividade</label>
+          <select id="atividade" name="atividade" required aria-required="true">
+            <option value="">Selecione</option>
+            <option value="comercio">Comércio</option>
+            <option value="servico">Serviço</option>
+            <option value="industria">Indústria</option>
           </select>
-
         </div>
 
-        <button
-          type="submit"
-          aria-label="Calcular impostos e faturamento do MEI"
-        >
+        <button type="submit" aria-label="Calcular impostos e faturamento do MEI">
           Calcular
         </button>
 
-        <p
-          id="mensagem-erro"
-          class="erro"
-          aria-live="polite"
-        ></p>
+        <p id="mensagem-erro" class="erro" aria-live="polite"></p>
 
       </form>
 
-      <section
-        id="resultado"
-        class="resultado"
-        aria-live="polite"
-      ></section>
+      <section id="resultado" class="resultado" aria-live="polite"></section>
 
     </section>
-
   </main>
 
-  <script src="js/script.js"></script>
+  <script src="js/script.js" defer></script>
+
+  
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(reg => console.log('[SW] Registrado com escopo:', reg.scope))
+          .catch(err => console.warn('[SW] Falha no registro:', err));
+      });
+    }
+  </script>
 
 </body>
 </html>
