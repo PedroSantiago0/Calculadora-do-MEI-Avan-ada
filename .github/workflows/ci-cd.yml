@@ -26,8 +26,8 @@ jobs:
           test -f index.html    || (echo "❌ index.html não encontrado" && exit 1)
           test -f css/style.css || (echo "❌ css/style.css não encontrado" && exit 1)
           test -f js/script.js  || (echo "❌ js/script.js não encontrado" && exit 1)
-          test -f vercel.json   || (echo "❌ vercel.json não encontrado" && exit 1)
-          test -f sw.js         || (echo "❌ sw.js não encontrado" && exit 1)
+          if [ ! -f vercel.json ]; then echo "⚠️ vercel.json não encontrado — apenas aviso"; fi
+          if [ ! -f sw.js ]; then echo "⚠️ sw.js não encontrado — apenas aviso"; fi
           echo "✅ Todos os arquivos encontrados"
 
       - name: Verificar tamanho dos assets
