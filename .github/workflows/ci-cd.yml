@@ -103,9 +103,17 @@ jobs:
       - name: Smoke test — verifica se o site respondeu
         run: |
           URL="${{ steps.producao.outputs.url }}"
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$URL")
+          if [ -z "$URL" ]; then
+            echo "❌ URL de produção vazia — o deploy pode ter falhado ou o passo de deploy não retornou a URL"
+            exit 1
+          fi
+          echo "Verificando URL: $URL"
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$URL" || true)
           echo "Status HTTP: $STATUS"
-          [ "$STATUS" = "200" ] || (echo "❌ Site não respondeu 200!" && exit 1)
+          if [ "$STATUS" != "200" ]; then
+            echo "❌ Site não respondeu 200!"
+            exit 1
+          fi
           echo "✅ Smoke test passou — site no ar"
 
       - name: Resumo do deploy
